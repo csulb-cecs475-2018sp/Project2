@@ -1,0 +1,24 @@
+﻿<Window x:Class="Cecs475.BoardGames.WpfApp.GameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cecs475.BoardGames.WpfApp"
+        mc:Ignorable="d"
+        Width="500" WindowStartupLocation="CenterOwner">
+    <DockPanel DataContext="{DynamicResource ViewModel}">
+        <ToolBar DockPanel.Dock="Top">
+            <ToolBarPanel>
+                <Button IsEnabled="{Binding CanUndo}" Click="UndoButton_Click"
+                        Padding="4">Undo last move</Button>
+            </ToolBarPanel>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom" Height="35">
+            <Label>Advantage:</Label>
+            <Label x:Name="mAdvantageLabel"/>
+            <Label Margin="6,0,0,0">Current Player:</Label>
+            <Label x:Name="mPlayerLabel"/>
+        </StatusBar>
+        <ContentControl x:Name="ViewPlaceholder" Content="{DynamicResource GameView}"/>
+    </DockPanel>
+</Window>

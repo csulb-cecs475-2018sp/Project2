@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Cecs475.BoardGames.Othello.WpfView.OthelloView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cecs475.BoardGames.Othello.WpfView"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="400">
+    <UserControl.Resources>
+        <!-- 
+        The ViewModel contains the reference to the OthelloBoard object and makes its properties
+        easier for the View itself to consume
+        -->
+        <local:OthelloViewModel x:Key="vm"/>
+        <!-- This converter will convert from an int to a colored circle. -->
+        <local:OthelloSquarePlayerConverter x:Key="PlayerColor"/>
+        <local:OthelloSquareBackgroundConverter x:Key="BackgroundColor"/>
+    </UserControl.Resources>
+    <!-- 
+    An ItemsControl is basically a "repeater": for each element in a collection that is its ItemSource,
+    the control "spits out" whatever is defined in its DataTemplate.
+    -->
+    <ItemsControl x:Name="BoardPositions" DataContext="{StaticResource vm}"
+                  ItemsSource="{Binding Squares}">
+        <!-- 
+        The ItemsPanel is the "container" for the controls that get spit out. 
+        A UniformGrid is a grid that auto-creates rows and columns that are evenly sized.
+        -->
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="8" Rows="8" Background="Green"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <!-- 
+        The ItemTemplate defines what to generate for each entry in the ItemSource. Our ItemSource
+        is a collection of OthelloSquare objects, which we can bind to when generating the controls
+        for the item.
+        -->
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <!-- 
+                This control is created for each element in the ItemSource. 
+                A Border control draws a border around whatever control it contains.
+                -->
+                <Border BorderThickness="1" BorderBrush="Black"
+                        MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave"
+                        MouseUp="Border_MouseUp">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource BackgroundColor}">
+                            <Binding Path="Position"/>
+                            <Binding Path="IsHighlighted"/>
+                        </MultiBinding>
+                    </Border.Background>
+                    <!-- 
+                    A ContentControl is just a placeholder that gets replaced by its Content. 
+                    We use it here because it can Bind to the Player property of an OthelloSquare object,
+                    using our PlayerColor resource to convert that int to a control.
+                    -->
+                    <ContentControl Content="{Binding Player, Converter={StaticResource PlayerColor}}"/>
+                </Border>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Cecs475.BoardGames.TicTacToe.WpfView.TicTacToeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cecs475.BoardGames.TicTacToe.WpfView"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:TicTacToeViewModel x:Key="vm"/>
+        <local:TicTacToeSquarePlayerConverter x:Key="PlayerSymbol"/>
+    </UserControl.Resources>
+    <ItemsControl x:Name="BoardPositions" DataContext="{StaticResource vm}"
+                  ItemsSource="{Binding Squares}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="3" Rows="3" Background="Green"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Border BorderThickness="1" BorderBrush="Black" Background="Green"
+                        MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave"
+                        MouseUp="Border_MouseUp">
+                    <ContentControl Content="{Binding Player, Converter={StaticResource PlayerSymbol}}"/>
+                </Border>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>
